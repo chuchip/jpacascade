@@ -14,6 +14,7 @@ public class FacturaOutputDto {
     int id;
 
     double importeFra=0;
+    ClienteOutputDto clienteOutputDto;
     List<LineaOutputDto> lineaOutputDtoList;
     public FacturaOutputDto(CabeceraFra cabeceraFra)
     {
@@ -25,5 +26,6 @@ public class FacturaOutputDto {
        lineaOutputDtoList=cabeceraFra.getLineasFra().stream()
                .map( LineaOutputDto::new )
                .collect(Collectors.toList());
+        clienteOutputDto=new ClienteOutputDto(cabeceraFra.getCliente());
     }
 }

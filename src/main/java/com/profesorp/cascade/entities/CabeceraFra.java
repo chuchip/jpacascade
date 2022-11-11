@@ -1,6 +1,5 @@
 package com.profesorp.cascade.entities;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,10 +20,13 @@ public class CabeceraFra extends Factura{
     @OneToMany(fetch= FetchType.EAGER,cascade = CascadeType.ALL)
     List<LineaFra> lineasFra;
 
+    @ManyToOne
+    Cliente cliente;
+
     public void addLinea(LineaFra lineaFra)
     {
         if (lineasFra==null)
-            lineasFra=new ArrayList();
+            lineasFra=new ArrayList<LineaFra>();
         lineaFra.setCabeceraFra(this);
         lineasFra.add(lineaFra);
     }

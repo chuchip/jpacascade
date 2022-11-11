@@ -40,7 +40,7 @@ public class CascadeApplication {
 
 
 			CabeceraFra cabeceraFra = new CabeceraFra();
-
+			cabeceraFra.setCliente(cl);
 			cabeceraFra.setNumeroFra(1);
 			cabeceraFra.setEjercicio(2022);
 			cabeceraFra.setImporteFra(1);
