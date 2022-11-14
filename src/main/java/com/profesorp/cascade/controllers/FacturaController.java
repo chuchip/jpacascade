@@ -46,21 +46,33 @@ public class FacturaController {
     public Mono<FacturaOutputDto> addLinea(@PathVariable  int idFra,@RequestBody LineaInputDto lineaInputDto) throws CompletionException
     {
         var future = new CompletableFuture<FacturaOutputDto>();
-                 future.completeAsync(() ->
-                {
-                    Optional<CabeceraFra> fraOpt=cabeceraFraRepository.findById(idFra);
-                    if (fraOpt.isEmpty())
-                        throw new CompletionException(new NotActiveException("Fra con id: "+ idFra+ " no existe"));
-                    var cabeceraFra= fraOpt.get();
-                    LineaFra lineaFra = lineaInputDto.toEntity();
-                    cabeceraFra.addLinea(lineaFra);
-                    cabeceraFraRepository.save(cabeceraFra);
-                    return new FacturaOutputDto(cabeceraFra);
-                }
-        );
+
+        future.completeAsync(() -> {
+                Optional<CabeceraFra> fraOpt=cabeceraFraRepository.findById(idFra);
+                if (fraOpt.isEmpty())
+                    throw new CompletionException(new NotActiveException("Fra con id: "+ idFra+ " no existe"));
+                var cabeceraFra= fraOpt.get();
+                LineaFra lineaFra = lineaInputDto.toEntity();
+                cabeceraFra.addLinea(lineaFra);
+                cabeceraFraRepository.save(cabeceraFra);
+                return new FacturaOutputDto(cabeceraFra);
+        });
         return Mono.fromFuture(future );
     }
-
+    @DeleteMapping("/{idFra}")
+    public Mono<Void> deleteFactura(@PathVariable int idFra)
+    {
+        var future = new CompletableFuture<Void>();
+        future.completeAsync(() ->  {
+            Optional<CabeceraFra> fraOpt=cabeceraFraRepository.findById(idFra);
+            if (fraOpt.isEmpty())
+                throw new CompletionException(new NotActiveException("Fra con id: "+ idFra+ " no existe"));
+            var cabeceraFra= fraOpt.get();
+            cabeceraFraRepository.delete(cabeceraFra);
+            return  null;
+        });
+        return Mono.fromFuture(future );
+    }
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ExceptionHandler({ NotActiveException.class})
     public String handleException(NotActiveException not) {
