@@ -2,7 +2,7 @@ package com.profesorp.cascade.entities;
 
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Setter
