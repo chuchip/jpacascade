@@ -3,7 +3,10 @@ package com.profesorp.cascade.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.JoinColumnOrFormula;
+import org.hibernate.annotations.JoinColumnsOrFormulas;
 import org.hibernate.annotations.JoinFormula;
+import org.springframework.core.annotation.Order;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,20 +23,25 @@ public class Article {
 	@Column
 	String description;
 
-	@OneToMany(mappedBy = "article",fetch = FetchType.EAGER)
-	List<PriceArticle> pricesArticle;
+	String word;
 
-	@ManyToOne()
-	@JoinFormula("(SELECT p.id_price_article FROM price_article p WHERE p.article_id = id ORDER BY p.posted_at DESC LIMIT 1)")
-	PriceArticle currentPriceArticule;
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinColumns({
+		@JoinColumn(name="word",referencedColumnName = "word",updatable = false,insertable = false)
+		//@JoinColumnOrFormula(formula = @JoinFormula(value="es",referencedColumnName = "isoCode"))
+		}
+	)
+	List<Dictionary> dictionaries;
 
 	@Override
 	public String toString() {
 		return "Article{" +
 				"id=" + id +
 				", description='" + description + '\'' +
-				", pricesArticle=" + pricesArticle.stream().map(r -> r.toString()).collect(Collectors.joining()) +
-				", currentPriceArticule=" + currentPriceArticule.toString() +
+	//			", pricesArticle=" +  (pricesArticle==null?"": pricesArticle.stream().map(r -> r.toString()).collect(Collectors.joining())) +
+	//			", currentPriceArticule=" + (currentPriceArticule==null?"":currentPriceArticule.toString()) +
+//				", dictionaries="+(dictionaries==null?"":"Iso "+dictionaries.getIsoCode()+" Translation: "+ dictionaries.getTranslation())+
+				", dictionaries="+(dictionaries==null?"":dictionaries.stream().map(r -> "Iso: "+r.getIsoCode()+" Translation: "+ r.getTranslation()+ "\n").collect(Collectors.joining()))+
 				'}';
 	}
 }
