@@ -27,7 +27,7 @@ public class PriceArticle {
     public String toString() {
         return "PriceArticle{" +
                 "idArticle=" + idPriceArticle +
-                ", article=" + article.getId() +
+                ", article=" + article.getIdArticle() +
                 ", precio=" + precio +
                 '}';
     }

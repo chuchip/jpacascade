@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 public class Article {
 	@Id
 	@GeneratedValue
-	//@Column(name="id_article")
-	int id;
+	@Column(name="id_article")
+	int idArticle;
 	
 	@Column
 	String description;
@@ -24,13 +24,13 @@ public class Article {
 	List<PriceArticle> pricesArticle;
 
 	@ManyToOne()
-	@JoinFormula("(SELECT p.id_price_article FROM price_article p WHERE p.article_id = id ORDER BY p.posted_at DESC LIMIT 1)")
+	@JoinFormula("(SELECT p.id_price_article FROM price_article p WHERE p.article_id = id_article ORDER BY p.posted_at DESC LIMIT 1)")
 	PriceArticle currentPriceArticule;
 
 	@Override
 	public String toString() {
 		return "Article{" +
-				"id=" + id +
+				"id=" + idArticle +
 				", description='" + description + '\'' +
 				", pricesArticle=" + pricesArticle.stream().map(r -> r.toString()).collect(Collectors.joining()) +
 				", currentPriceArticule=" + currentPriceArticule.toString() +
